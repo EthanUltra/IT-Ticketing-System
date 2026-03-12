@@ -165,3 +165,4 @@ npm run dev   # → http://localhost:5173
 ## CV Description
 
 > Designed and built a full-stack role-based IT help desk system using React, Node.js, PostgreSQL, and Docker. Features ticket lifecycle management, role-based access control (USER / AGENT / ADMIN), JWT authentication with refresh token rotation, internal agent notes, audit logging, and a real-time-style comment system.
+> Note: The backend is hosted on Render free tier. The first request may take ~30 seconds due to cold start.
