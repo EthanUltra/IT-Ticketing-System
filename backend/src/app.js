@@ -24,3 +24,10 @@ app.use((_, res) =>
 )
 app.use(errorHandler)
 module.exports = app
+
+app.use(
+  cors({
+    origin: 'https://api-ticket-system.ethanshrestha.ch',
+    credentials: true,
+  })
+)
