@@ -24,6 +24,9 @@ model User {
   refreshTokens   RefreshToken[]
   auditLogs       AuditLog[]
 
+  activities ActivityLog[]
+  attachments Attachment[]
+
   @@map("users")
 }
 
@@ -46,6 +49,9 @@ model Ticket {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  activities ActivityLog[]
+  attachments Attachment[]
 
   @@map("tickets")
 }
@@ -114,4 +120,31 @@ enum Category {
   NETWORK
   ACCESS
   OTHER
+}
+
+model ActivityLog {
+  id        String   @id @default(cuid())
+  ticketId   String
+  userId     String?
+  action     String
+  message    String
+  createdAt  DateTime @default(now())
+
+  ticket     Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade) 
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+}
+
+model Attachment {
+  id           String   @id @default(cuid())
+  ticketId     String
+  uploadedById String
+  originalName String
+  storedName   String
+  mimeType     String
+  size         Int
+  path         String
+  createdAt    DateTime @default(now())
+
+  ticket       Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  uploadedBy   User     @relation(fields: [uploadedById], references: [id], onDelete: Cascade)
 }

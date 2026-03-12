@@ -62,3 +62,10 @@ exports.logout = async (req, res, next) => {
 }
 exports.me = (req, res) =>
   res.json({ status: 'success', data: { user: req.user } })
+
+app.use(
+  cors({
+    origin: 'https://api-ticket-system.ethanshrestha.ch',
+    credentials: true,
+  })
+)

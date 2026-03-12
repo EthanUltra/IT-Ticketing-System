@@ -12,6 +12,17 @@ export default function TicketDetailPage() {
   const [submitting, setSubmitting] = useState(false); const [updating, setUpdating] = useState(false);
   const isAgent = user?.role !== 'USER';
 
+  const uploadFile = async (file) => {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  await api.post(`/tickets/${ticketId}/attachments`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
+
   useEffect(() => {
     (async () => {
       try {

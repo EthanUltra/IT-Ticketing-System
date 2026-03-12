@@ -10,6 +10,7 @@ import TicketDetailPage from './pages/TicketDetailPage';
 import CreateTicketPage from './pages/CreateTicketPage';
 import UsersPage from './pages/UsersPage';
 import { Spinner } from './components/ui/Badge';
+import ErrorBoundary from './components/ErrorBoundary';
 
 function PrivateRoute({ children, roles }) {
   const { user, loading } = useAuthStore();
@@ -93,7 +94,9 @@ function AppRoutes() {
 export default function App() {
   return (
     <BrowserRouter>
-      <AppRoutes />
+      <ErrorBoundary>
+        <AppRoutes />
+      </ErrorBoundary>
     </BrowserRouter>
   );
 }
