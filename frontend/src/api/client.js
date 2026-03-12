@@ -1,26 +1,25 @@
 ﻿import axios from 'axios'
-import { useAuthStore } from '../store/authStore'
 
-const api = axios.create({ baseURL: '/api', withCredentials: true })
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL,
+  withCredentials: true,
+})
 
 api.interceptors.request.use((config) => {
-  const token = useAuthStore.getState().accessToken
-  if (token) config.headers.Authorization = 'Bearer ' + token
+  try {
+    const token = localStorage.getItem('accessToken')
+    if (token) config.headers.Authorization = 'Bearer ' + token
+  } catch {}
   return config
 })
 
-let isRefreshing = false,
-  queue = []
+let isRefreshing = false
+let queue = []
 
 api.interceptors.response.use(
   (res) => res,
   async (err) => {
     const original = err.config
-
-    // do not retry the refresh request itself
-    if (original?.url?.includes('/auth/refresh')) {
-      return Promise.reject(err)
-    }
 
     if (err.response?.status === 401 && !original._retry) {
       if (isRefreshing) {
@@ -36,9 +35,12 @@ api.interceptors.response.use(
       isRefreshing = true
 
       try {
-        const token = await useAuthStore.getState().refresh()
-        if (!token) throw new Error('No token')
+        const res = await api.post('/auth/refresh')
+        const token = res.data?.data?.accessToken
 
+        if (!token) throw new Error('No access token returned')
+
+        localStorage.setItem('accessToken', token)
         queue.forEach(({ resolve }) => resolve(token))
         queue = []
 
