@@ -1,0 +1,1 @@
+module.exports = { content: ['./index.html','./src/**/*.{js,jsx}'], theme: { extend: { fontFamily: { sans: ['DM Sans','sans-serif'], mono: ['JetBrains Mono','monospace'] }, colors: { surface: { 50:'#f4f4f5',100:'#e4e4e7',800:'#18181b',900:'#0f0f11',950:'#09090b' }, accent: { DEFAULT:'#f97316',dark:'#ea580c' } } } }, plugins: [] };

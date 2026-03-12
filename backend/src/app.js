@@ -1,0 +1,18 @@
+﻿const express = require('express');
+const helmet = require('helmet');
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
+const env = require('./config/env');
+const { errorHandler } = require('./middleware/errorHandler');
+const app = express();
+app.use(helmet());
+app.use(cors({ origin: env.frontendUrl, credentials: true }));
+app.use(express.json({ limit: '10kb' }));
+app.use(cookieParser(env.cookie.secret));
+app.use('/api/auth', require('./modules/auth/auth.routes'));
+app.use('/api/tickets', require('./modules/tickets/tickets.routes'));
+app.use('/api/users', require('./modules/users/users.routes'));
+app.get('/api/health', (_, res) => res.json({ status: 'ok', ts: new Date().toISOString() }));
+app.use((_, res) => res.status(404).json({ status: 'error', message: 'Not found' }));
+app.use(errorHandler);
+module.exports = app;

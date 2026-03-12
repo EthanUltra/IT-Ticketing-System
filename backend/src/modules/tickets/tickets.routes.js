@@ -1,0 +1,14 @@
+﻿const { Router } = require('express');
+const c = require('./tickets.controller');
+const { authenticate } = require('../../middleware/authenticate');
+const { authorize } = require('../../middleware/authorize');
+const router = Router();
+router.use(authenticate);
+router.get('/stats', authorize('ADMIN','AGENT'), c.stats);
+router.get('/', c.list);
+router.post('/', c.create);
+router.get('/:id', c.get);
+router.patch('/:id', authorize('ADMIN','AGENT'), c.update);
+router.delete('/:id', authorize('ADMIN'), c.remove);
+router.post('/:id/comments', c.addComment);
+module.exports = router;
