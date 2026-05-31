@@ -44,7 +44,7 @@ Users submit support tickets. Agents manage and resolve them. Admins control eve
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/yourusername/it-ticketing-system.git
+git clone https://github.com/ethanultra/it-ticketing-system.git
 cd it-ticketing-system
 ```
 
